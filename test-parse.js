@@ -2,6 +2,8 @@ import { ingest } from "./src/ingest.js";
 import { parseCsv } from "./src/parse/parseCsv.js";
 import { parseNotes } from "./src/parse/parseNotes.js";
 import { standardizeFragments } from "./src/standardize.js";
+import { reconcile } from "./src/reconcile.js";
+import { scoreCandidates } from "./src/score.js";
 
 const csvResult = ingest("samples/recruiter_export.csv");
 const { fragments: csvFragments, warnings: csvWarnings } = parseCsv(
@@ -33,3 +35,11 @@ const standardized = standardizeFragments(allFragments);
 
 console.log("\n=== Standardized Fragments ===");
 console.log(JSON.stringify(standardized, null, 2));
+
+
+
+const reconciled = reconcile(standardized);
+const scored = scoreCandidates(reconciled);
+
+console.log("\n=== Reconciled + Scored Candidates ===");
+console.log(JSON.stringify(scored, null, 2));
