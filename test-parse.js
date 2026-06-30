@@ -1,0 +1,25 @@
+import { ingest } from "./src/ingest.js";
+import { parseCsv } from "./src/parse/parseCsv.js";
+import { parseNotes } from "./src/parse/parseNotes.js";
+
+const csvResult = ingest("samples/recruiter_export.csv");
+const { fragments: csvFragments, warnings: csvWarnings } = parseCsv(
+  csvResult.raw,
+  csvResult.filePath
+);
+
+console.log("=== CSV Fragments ===");
+console.log(JSON.stringify(csvFragments, null, 2));
+console.log("=== CSV Warnings ===");
+console.log(csvWarnings);
+
+const notesResult = ingest("samples/recruiter_notes.txt");
+const { fragments: notesFragments, warnings: notesWarnings } = parseNotes(
+  notesResult.raw,
+  notesResult.filePath
+);
+
+console.log("\n=== Notes Fragments ===");
+console.log(JSON.stringify(notesFragments, null, 2));
+console.log("=== Notes Warnings ===");
+console.log(notesWarnings);
