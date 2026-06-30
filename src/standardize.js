@@ -130,6 +130,7 @@ export function normalizeDateToYearMonth(rawDate) {
 export function standardizeFragment(fragment) {
   return {
     ...fragment,
+    email: fragment.email ? fragment.email.toLowerCase() : fragment.email,
     phone: normalizePhone(fragment.phone),
     skills: normalizeSkills(fragment.skills),
   };
