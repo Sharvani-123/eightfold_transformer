@@ -1,6 +1,7 @@
 import { ingest } from "./src/ingest.js";
 import { parseCsv } from "./src/parse/parseCsv.js";
 import { parseNotes } from "./src/parse/parseNotes.js";
+import { standardizeFragments } from "./src/standardize.js";
 
 const csvResult = ingest("samples/recruiter_export.csv");
 const { fragments: csvFragments, warnings: csvWarnings } = parseCsv(
@@ -23,3 +24,12 @@ console.log("\n=== Notes Fragments ===");
 console.log(JSON.stringify(notesFragments, null, 2));
 console.log("=== Notes Warnings ===");
 console.log(notesWarnings);
+
+
+
+// ... after getting csvFragments and notesFragments ...
+const allFragments = [...csvFragments, ...notesFragments];
+const standardized = standardizeFragments(allFragments);
+
+console.log("\n=== Standardized Fragments ===");
+console.log(JSON.stringify(standardized, null, 2));
