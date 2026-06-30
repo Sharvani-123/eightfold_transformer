@@ -26,11 +26,10 @@ export function ingest(filePath){
     }
 
     let sourceType;
-    if(ext===".csv"){
-        sourceType="recruiter.csv";
-    }
-    else if(ext===".txt"){
-        sourceType="recruiter.notes";
+    if (ext === ".csv") {
+        sourceType = "recruiter_csv";
+    } else if (ext === ".txt") {
+        sourceType = "recruiter_notes";
     }
     else{
         throw new Error(`Unsupported file type: ${ext} (${filePath})`);
