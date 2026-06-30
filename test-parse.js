@@ -4,6 +4,9 @@ import { parseNotes } from "./src/parse/parseNotes.js";
 import { standardizeFragments } from "./src/standardize.js";
 import { reconcile } from "./src/reconcile.js";
 import { scoreCandidates } from "./src/score.js";
+import { shapeCandidates } from "./src/shape.js";
+import { guardRecords } from "./src/guard.js";
+import fs from "fs";
 
 const csvResult = ingest("samples/recruiter_export.csv");
 const { fragments: csvFragments, warnings: csvWarnings } = parseCsv(
@@ -43,3 +46,18 @@ const scored = scoreCandidates(reconciled);
 
 console.log("\n=== Reconciled + Scored Candidates ===");
 console.log(JSON.stringify(scored, null, 2));
+
+
+
+
+const config = JSON.parse(fs.readFileSync("config/sample-config.json", "utf-8"));
+
+const { results: shaped, warnings: shapeWarnings } = shapeCandidates(scored, config);
+console.log("\n=== Shaped Output ===");
+console.log(JSON.stringify(shaped, null, 2));
+console.log("Shape warnings:", shapeWarnings);
+
+const { validated, warnings: guardWarnings } = guardRecords(shaped, config);
+console.log("\n=== Guarded (Final) Output ===");
+console.log(JSON.stringify(validated, null, 2));
+console.log("Guard warnings:", guardWarnings);
